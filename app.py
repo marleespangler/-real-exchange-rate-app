@@ -1,25 +1,23 @@
-
-Real Exchange Rate Explorer
-===========================
-
-Streamlit app that pulls monthly CPI and exchange-rate data from the IMF
-SDMX 3.0 API and computes the bilateral real exchange rate (RER) between any
-two IMF economies (including the Euro area, IMF code G163).
-
-Definitions (Country 1 = base, Country 2 = quote):
-
-    E_i(t)   = IMF exchange rate, units of country-i currency per 1 USD
-    S(t)     = E_2(t) / E_1(t)  -> units of Country 2 currency per 1 unit
-                                   of Country 1 currency
-    RER(t)   = S(t) * P1(t) / P2(t)
-    RER*     = mean of RER(t) over the valid months in the selected sample
-    Index(t) = 100 * RER(t) / RER*
-
-A rise in RER(t) is a real appreciation of Country 1's currency against
-Country 2's (Country 1's goods become relatively more expensive).
-
-Run with:  streamlit run app.py
-"""
+# Real Exchange Rate Explorer
+# ===========================
+#
+# Streamlit app that pulls monthly CPI and exchange-rate data from the IMF
+# SDMX 3.0 API and computes the bilateral real exchange rate (RER) between any
+# two IMF economies (including the Euro area, IMF code G163).
+#
+# Definitions (Country 1 = base, Country 2 = quote):
+#
+#     E_i(t)   = IMF exchange rate, units of country-i currency per 1 USD
+#     S(t)     = E_2(t) / E_1(t)  -> units of Country 2 currency per 1 unit
+#                                    of Country 1 currency
+#     RER(t)   = S(t) * P1(t) / P2(t)
+#     RER*     = mean of RER(t) over the valid months in the selected sample
+#     Index(t) = 100 * RER(t) / RER*
+#
+# A rise in RER(t) is a real appreciation of Country 1's currency against
+# Country 2's (Country 1's goods become relatively more expensive).
+#
+# Run with:  streamlit run app.py
 
 from __future__ import annotations
 
@@ -281,7 +279,7 @@ def parse_sdmx_xml_data(text: str) -> pd.Series:
 
 def parse_data_response(resp: requests.Response) -> pd.Series:
     ctype = resp.headers.get("Content-Type", "").lower()
-    text = resp.text.lstrip("").strip()
+    text = resp.text.lstrip("﻿").strip()
     if not text:
         return empty_series()
     if "json" in ctype or text.startswith("{"):
@@ -749,4 +747,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
